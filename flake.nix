@@ -1,15 +1,20 @@
 {
-  description = "A very basic flake";
+  description = "An example deployment of NGIpkgs software to a local VM";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    ngipkgs.url = "github:ngi-nix/ngipkgs";
   };
 
-  outputs = { self, nixpkgs }: {
+  outputs = { self, nixpkgs, ngipkgs }: {
 
-    packages.x86_64-linux.hello = nixpkgs.legacyPackages.x86_64-linux.hello;
-
-    packages.x86_64-linux.default = self.packages.x86_64-linux.hello;
-
+    nixosConfigurations.myMachine = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      modules = [
+        ./configuration.nix
+        ngipkgs.nixosModules.default
+        ngipkgs.nixosModules."services.vula"
+      ];
+    };
   };
 }
