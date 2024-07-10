@@ -1,5 +1,10 @@
 { config, pkgs, ... }:
 {
+
+  # For more info: https://github.com/ngi-nix/ngipkgs/blob/main/maintainers/cachix.md
+  nix.settings.substituters = ["https://ngi.cachix.org/"];
+  nix.settings.trusted-public-keys = ["ngi.cachix.org-1:n+CAL72ROC3qQuLxIHpV+Tw5t42WhXmMhprAGkRSrOw="];
+
   users.users.user = {
     isNormalUser = true;
     extraGroups = [ "wheel" ];
